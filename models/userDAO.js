@@ -21,6 +21,19 @@ module.exports = {
 			throw error;
 		});
 	},
-
+	create(username){
+        return DB.query(
+            'INSERT INTO users(name) VALUES($(userName)) RETURNING *',
+            {
+                userName: username
+            }
+        )
+        .then((result) => {
+            return result;
+        })
+        .catch((error) => {
+            return error;
+        })
+    },
 	
 };
