@@ -10,4 +10,15 @@ router.get('/', function(req, res, next) {
   	});
 });
 
+router.get('/:id', function(req, res, next){
+  var id = parseInt(req.params.id);
+  userDAO.getById(id)
+  	.then((user) => {
+  		res.send(user)
+  	})
+  	.catch((error) =>
+  		res.send(error)
+  	)
+});
+
 module.exports = router;
