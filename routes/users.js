@@ -21,4 +21,7 @@ router.get('/:id', function(req, res, next){
   	)
 });
 
+//POST /users : créer un user avec (name, email, alliance_id) + 200 + nouvel user
+
+
 module.exports = router;
