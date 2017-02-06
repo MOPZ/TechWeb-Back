@@ -1,12 +1,12 @@
-var pgp = require('pg-promise') ();
+var pgp = require('pg-promise')();
 
 var config = {
-	host: 'localhost',
-	port: 5432,
-	database: 'Efrei',
-	user: 'efrei',
-	password: 'password'
-};;
+    host: 'localhost',
+    port:5432,
+    database: 'efrei',
+    user: 'efrei',
+password: 'password'
+};
 
 const DB = pgp(config);
 
