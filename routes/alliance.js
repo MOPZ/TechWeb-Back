@@ -47,8 +47,7 @@ router.delete('/:id', function(req,res, next){
         )
 });
 
-router.put('/:id', function(req,res,next){
-    console.log('entered', req.body);
+router.put('/', function(req,res,next){
     var id = parseInt(req.body.alliance.id);
     var allianceName = req.body.alliance.name;
     AllianceDAO.editAllianceById(id,allianceName)
