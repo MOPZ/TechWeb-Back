@@ -14,6 +14,41 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
 
+SET search_path = public, pg_catalog;
+
+ALTER TABLE ONLY public.users DROP CONSTRAINT users_alliances_id_fk;
+ALTER TABLE ONLY public.characters DROP CONSTRAINT characters_users_id_fk;
+ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
+ALTER TABLE ONLY public.characters DROP CONSTRAINT characters_pkey;
+ALTER TABLE ONLY public.alliances DROP CONSTRAINT alliances_pkey;
+ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.characters ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.alliances ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE public.users_id_seq;
+DROP TABLE public.users;
+DROP SEQUENCE public.characters_id_seq;
+DROP TABLE public.characters;
+DROP SEQUENCE public.alliances_id_seq;
+DROP TABLE public.alliances;
+DROP TYPE public.classes;
+DROP EXTENSION plpgsql;
+DROP SCHEMA public;
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: Deluxe
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO "Deluxe";
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: Deluxe
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
@@ -201,7 +236,7 @@ ALTER TABLE ONLY users
 --
 
 ALTER TABLE ONLY characters
-    ADD CONSTRAINT characters_users_id_fk FOREIGN KEY (user_id) REFERENCES users(id);
+    ADD CONSTRAINT characters_users_id_fk FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -209,7 +244,7 @@ ALTER TABLE ONLY characters
 --
 
 ALTER TABLE ONLY users
-    ADD CONSTRAINT users_alliances_id_fk FOREIGN KEY (alliance_id) REFERENCES alliances(id);
+    ADD CONSTRAINT users_alliances_id_fk FOREIGN KEY (alliance_id) REFERENCES alliances(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
