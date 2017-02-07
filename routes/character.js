@@ -23,4 +23,10 @@ router.get('/:id', function(req, res, next) {
         )
 });
 
+router.post('/:iduser', function(req, res, next){
+    var id = parseInt(req.params.iduser);
+    var bodyPost = req.body;
+    res.send(bodyPost);
+});
+
 module.exports = router;

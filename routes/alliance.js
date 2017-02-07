@@ -23,6 +23,7 @@ router.get('/:id', function(req, res, next) {
         )
 });
 
+//Revoir le fonctionnement, mettre sécurité si alliance déjà créée
 router.post('/:name', function(req, res, next){
     var name = req.params.name;
     AllianceDAO.create(name)
