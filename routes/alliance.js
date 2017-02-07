@@ -26,7 +26,7 @@ router.get('/:id', function(req, res, next) {
 router.post('/:name', function(req, res, next){
     var name = req.params.name;
     AllianceDAO.create(name)
-        .then((alliance) => {
+        .then((alliance) => { 
             res.status(200);
             res.send(alliance);
         })
