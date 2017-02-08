@@ -35,8 +35,17 @@ router.post('/:name', function(req, res, next){
         )
 });
 
+/*
+Object received : 
+{
+    "alliance" : {
+        "id" : allianceId,
+        "name" : allianceName
+    }
+}
+*/
 router.delete('/:id', function(req,res, next){
-    var id = parseInt(req.params.id);
+    var id = parseInt(req.body.alliance.id);
     AllianceDAO.deleteAllianceById(id)
         .then((alliance) => {
             res.status(200);
@@ -47,6 +56,15 @@ router.delete('/:id', function(req,res, next){
         )
 });
 
+/*
+Object received : 
+{
+    "alliance" : {
+        "id" : allianceId,
+        "name" : allianceName
+    }
+}
+*/
 router.put('/', function(req,res,next){
     var id = parseInt(req.body.alliance.id);
     var allianceName = req.body.alliance.name;
