@@ -5,7 +5,7 @@ var config = {
     port:5432,
     database: 'efrei',
     user: 'efrei',
-password: 'password'
+password: 'efrei'
 };
 
 const DB = pgp(config);
