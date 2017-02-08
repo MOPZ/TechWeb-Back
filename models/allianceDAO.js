@@ -27,24 +27,25 @@ module.exports = {
     },
     create(alliancename){
         return DB.query(
-            'INSERT INTO alliances(name) VALUES($(allianceName)) RETURNING *',
+            'INSERT INTO alliances(name)'
+            + 'SELECT $(allianceName)'
+            + 'FROM dual'
+            + 'WHERE NOT EXISTS(SELECT 1 from alliances WHERE name = $(allianceName))',
             {
-                allianceName: alliancename
+                "allianceName" : alliancename
             }
-        )
-        .then((result) => {
-            return result;
-        })
-        .catch((error) => {
-            throw error;
-        })
+            )
+            .then((result) => {
+                return result;
+            })
+            .catch((error) => {
+                error.description = 'ALLIANCE_ALREADY_CREATED';
+                throw error;
+            })
     },
     deleteAllianceById(id){
         return DB.query(
-            'DELETE FROM alliances WHERE id = ${allianceID}',
-            {
-                allianceID: id
-            }
+            'DELETE FROM alliances WHERE id = '+ id
         )
             .then((result) => {
                 return result;
@@ -56,7 +57,7 @@ module.exports = {
     },
     editAllianceById(id, alliance){
         return DB.query(
-    'UPDATE alliances SET name = ${newAllianceName} where id = ${allianceID} RETURNING*',
+        'UPDATE alliances SET name = ${newAllianceName} WHERE id = '+ id +' RETURNING *',
             {
                 newAllianceName: alliance,
                 allianceID: id
