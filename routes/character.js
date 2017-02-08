@@ -29,11 +29,11 @@ router.post('/:iduser', function(req, res, next){
     res.send(bodyPost);
 });
 
-router.put('/', function(req,res,next)
+router.post('/', function(req,res,next)
 {
     var charname = req.body.character.name;
     var charclass = req.body.character.class;
-    var user_id = req.body.character.userID;
+    var user_id = parseInt(req.body.character.userID);
     var position = req.body.character.position;
     CharDAO.createCharacter(charname, charclass,user_id,position)
         .then((character) =>{
@@ -47,7 +47,52 @@ router.put('/', function(req,res,next)
                 res.status(200);
                 res.send(character);
             }
-            
+        })
+        .catch((error) => 
+            res.send(error)
+        )
+});
+
+router.delete('/:id', function(req,res,next)
+{
+    var id = req.params.id;
+    CharDAO.deleteCharacterById(id)
+        .then((character) =>{
+            if(character.length === 0)
+            {
+                res.status(500);
+                res.send('CHARACTER_NON_EXISTENT');
+            }
+            else
+            {
+                res.status(200);
+                res.send(character);
+            }
+        })
+        .catch((error) => 
+            res.send(error)
+        )
+});
+
+router.put('/:id', function(req,res,next)
+{
+    var id = req.params.id;
+    var charname = req.body.character.name;
+    var charclass = req.body.character.class;
+    var user_id = req.body.character.userID;
+    var position = req.body.character.position;
+    CharDAO.editCharacterById(id,charname, charclass,user_id,position)
+        .then((character) =>{
+            if(character.length === 0)
+            {
+                res.status(500);
+                res.send('NAME_ALREADY_TAKEN_BY_ANOTHER_CHARACTER');
+            }
+            else
+            {
+                res.status(200);
+                res.send(character);
+            }
         })
         .catch((error) => 
             res.send(error)
