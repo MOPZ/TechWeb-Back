@@ -29,4 +29,29 @@ router.post('/:iduser', function(req, res, next){
     res.send(bodyPost);
 });
 
+router.put('/', function(req,res,next)
+{
+    var charname = req.body.character.name;
+    var charclass = req.body.character.class;
+    var user_id = req.body.character.userID;
+    var position = req.body.character.position;
+    CharDAO.createCharacter(charname, charclass,user_id,position)
+        .then((character) =>{
+            if(character.length === 0)
+            {
+                res.status(500);
+                res.send('CHARACTER_ALREADY_CREATED');
+            }
+            else
+            {
+                res.status(200);
+                res.send(character);
+            }
+            
+        })
+        .catch((error) => 
+            res.send(error)
+        )
+});
+
 module.exports = router;

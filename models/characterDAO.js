@@ -9,7 +9,7 @@ module.exports = {
             .catch((error) => {
                 throw error;
             })
-    },
+    }, 
     getById(id){
         return DB.query(
             'SELECT * FROM characters WHERE id = ${characterID}',
@@ -22,21 +22,24 @@ module.exports = {
                 return result [0];
             })
     },
-    createById(id, character){
+    createCharacter(name, char_class, user_id, position){
         return DB.query(
-            'INSERT INTO characters(name, user_id, class, position) VALUES($(charName), $(user_id), $(class), $(position)) RETURNING *',
+            'INSERT INTO characters(name, user_id, class, position)'
+            + 'SELECT $(charName), $(userID), $(classChar), $(charPosition) '
+            + 'FROM (values(1)) as TMP WHERE NOT EXISTS (SELECT name from characters WHERE name = $(charName)) RETURNING *',
             {
-                charName: character.name,
-                user_id: character.id,
-                class: character.class,
-                position: character.position
+                charName : name,
+                classChar : char_class,
+                userID : user_id,
+                charPosition: position
             }
-            .then((result) => {
-                return result;
-            })
-            .catch((error) => {
-                throw error;
-            })
-            )
+        )
+        .then((result)=>{
+            return result;
+        })
+        .catch((error) =>{
+            throw error;
+        })
     }
 };
+
