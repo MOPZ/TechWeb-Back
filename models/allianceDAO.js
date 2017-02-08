@@ -28,9 +28,12 @@ module.exports = {
     create(alliancename){
         return DB.query(
             'INSERT INTO alliances(name)'
-            + 'SELECT \'' + alliancename+ '\''
+            + 'SELECT $(allianceName)'
             + 'FROM dual'
-            + 'WHERE NOT EXISTS(SELECT 1 from alliances WHERE name = \''+ alliancename + '\')'
+            + 'WHERE NOT EXISTS(SELECT 1 from alliances WHERE name = $(allianceName))',
+            {
+                "allianceName" : alliancename
+            }
             )
             .then((result) => {
                 return result;
