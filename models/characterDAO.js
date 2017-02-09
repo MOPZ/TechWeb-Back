@@ -2,7 +2,7 @@ const DB = require('../models/database');
 
 module.exports = {
     getAll(){
-        return DB.query('SELECT * from characters')
+        return DB.accessor.query('SELECT * from characters')
             .then((result) => {
                 return result;
             })
@@ -11,7 +11,7 @@ module.exports = {
             })
     }, 
     getById(id){
-        return DB.query(
+        return DB.accessor.query(
             'SELECT * FROM characters WHERE id = ${characterID}',
             { characterID : id }
         )
@@ -24,7 +24,7 @@ module.exports = {
     },
     createCharacter(name, char_class, user_id, position){
         console.log(position);
-        return DB.query(
+        return DB.accessor.query(
             'INSERT INTO characters(name, user_id, class, position)'
             + 'SELECT $(charName), $(userID), $(classChar), $(charPosition) '
             + 'FROM (values(1)) as TMP WHERE NOT EXISTS (SELECT name from characters WHERE name = $(charName)) RETURNING *',
@@ -43,7 +43,7 @@ module.exports = {
         })
     },
     deleteCharacterById(id){
-        return DB.query(
+        return DB.accessor.query(
             'DELETE FROM characters WHERE id = '+ id + ' RETURNING *'
         )
             .then((result) => {
@@ -54,7 +54,7 @@ module.exports = {
             })
     },
     editCharacterById(id, name, char_class, user_id, position){
-        return DB.query(
+        return DB.accessor.query(
             'UPDATE characters '
             + 'SET name = $(charName), '
             + 'class = $(classChar), '
