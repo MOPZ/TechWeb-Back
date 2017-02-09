@@ -74,6 +74,46 @@ module.exports = {
             })
     },
     getListUsersById(id){
-
+        return DB.accessor.query(
+            'SELECT * FROM users WHERE alliance_id = 1'
+        )
+        .then((result) => {
+                return result;
+            })
+            .catch((error) => {
+                throw error;
+            })
+    },
+    getListCharactersById(id){
+        return DB.accessor.query(
+            'SELECT characters.* from characters, users '
+            +'WHERE users.alliance_id = $(allianceID) and characters.user_id = users.id',
+            {
+                allianceID : id
+            }
+        )
+            .then((result) => {
+                return result;
+            })
+            .catch((error) => {
+                throw error;
+            })
+        
+    },
+    getListCharactersByClass(id, className){
+        return DB.accessor.query(
+            'SELECT characters.* from characters, users '
+            +'WHERE characters.class = $(classname) AND users.alliance_id = $(allianceID) AND characters.user_id = users.id',
+            {
+                allianceID : id,
+                classname: className
+            }
+        )
+            .then((result) => {
+                return result;
+            })
+            .catch((error) => {
+                throw error;
+            })
     }
 };

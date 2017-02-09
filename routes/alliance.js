@@ -106,4 +106,41 @@ router.put('/:id', function(req,res,next){
         )
 });
 
+router.get('/:id/users', function(req,res,next){
+    var id = parseInt(req.params.id);
+    AllianceDAO.getListUsersById(id)
+        .then((alliance) => {
+            res.status(200);
+            res.send(alliance);
+        })
+        .catch((error) => 
+            res.send(error)
+        )
+});
+
+router.get('/:id/characters', function(req,res,next){
+    var id = parseInt(req.params.id);
+    AllianceDAO.getListCharactersById(id)
+        .then((alliance) => {
+            res.status(200);
+            res.send(alliance);
+        })
+        .catch((error) => 
+            res.send(error)
+        )
+});
+
+router.get('/:id/characters/:classname', function(req,res,next){
+    var id = parseInt(req.params.id);
+    var classname = req.params.classname
+    AllianceDAO.getListCharactersByClass(id, classname)
+        .then((alliance) => {
+            res.status(200);
+            res.send(alliance);
+        })
+        .catch((error) => 
+            res.send(error)
+        )
+});
+
 module.exports = router;
