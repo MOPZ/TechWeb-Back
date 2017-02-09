@@ -23,6 +23,7 @@ module.exports = {
             })
     },
     createCharacter(name, char_class, user_id, position){
+        console.log(position);
         return DB.query(
             'INSERT INTO characters(name, user_id, class, position)'
             + 'SELECT $(charName), $(userID), $(classChar), $(charPosition) '
@@ -31,7 +32,7 @@ module.exports = {
                 charName : name,
                 classChar : char_class,
                 userID : user_id,
-                charPosition: position
+                charPosition: '(' + position.x + ',' + position.y + ')'
             }
         )
         .then((result)=>{

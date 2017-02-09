@@ -35,6 +35,7 @@ router.post('/', function(req,res,next)
     var charclass = req.body.character.class;
     var user_id = parseInt(req.body.character.userID);
     var position = req.body.character.position;
+    //var position = '(456.23, 222.666)'
     CharDAO.createCharacter(charname, charclass,user_id,position)
         .then((character) =>{
             if(character.length === 0)
