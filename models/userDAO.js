@@ -26,16 +26,19 @@ module.exports = {
     create(username, email, allianceID){
         var q_email = "null";
         var q_allianceID = null;
-        if(!email === undefined)
+        if(!(email === undefined))
         {
             q_email = email;
         }
-        if(!allianceID === undefined)
+        if(!(allianceID === undefined))
         {
             q_allianceID = allianceID
         }
         return DB.query(
-            'INSERT INTO users(name, email, alliance_id) VALUES($(userName), $(mail), $(allianceid)) RETURNING *',
+            'INSERT INTO users(name, email, alliance_id) '
+            + 'SELECT $(userName), $(mail), $(allianceid) '
+            + 'FROM (values(1)) as TMP '
+            + 'WHERE NOT EXISTS (SELECT name FROM users where name = $(userName)) RETURNING *',
             {
                 userName: username,
                 mail: q_email,
@@ -48,5 +51,50 @@ module.exports = {
         .catch((error) => {
             throw error;
         })
+    },
+    deleteUserById(id){
+        return DB.query(
+            'DELETE FROM users WHERE id = $(userID) RETURNING *',
+            {
+                userID: id
+            }
+        )
+            .then((result) => {
+                return result;
+            })
+            .catch((error) => {
+                throw error;
+            })
+        
+    },
+    editUserById(id, name, email, allianceID)
+    {
+        var q_email = "null";
+        var q_allianceID = null;
+        if(!(email === undefined))
+        {
+            q_email = email;
+        }
+        if(!(allianceID === undefined))
+        {
+            q_allianceID = allianceID
+        }
+        return DB.query(
+            'UPDATE users '
+            +'SET name = $(newUserName), email = $(newMail), alliance_id = $(newAllianceID) '
+            +'WHERE id = $(userID) RETURNING *',
+            {
+                newUserName: name,
+                newMail: q_email,
+                newAllianceID: q_allianceID,
+                userID : id
+            }
+        )
+            .then((result) => {
+                return result;
+            })
+            .catch((error) => {
+                throw error;
+            })
     }
 };
