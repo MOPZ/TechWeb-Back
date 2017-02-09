@@ -96,5 +96,20 @@ module.exports = {
             .catch((error) => {
                 throw error;
             })
+    },
+    getUserCharactersById(id)
+    {
+        return DB.accessor.query(
+            'SELECT * from characters WHERE user_id = $(userID)',
+            {
+                userID : id
+            }
+        )
+            .then((result) => {
+                return result;
+            })
+            .catch((error) => {
+                throw error;
+            })
     }
 };
