@@ -45,7 +45,10 @@ module.exports = {
     },
     deleteAllianceById(id){
         return DB.query(
-            'DELETE FROM alliances WHERE id = '+ id + ' RETURNING *'
+            'DELETE FROM alliances WHERE id = $(allianceID) RETURNING *',
+            {
+                allianceID: id
+            }
         )
             .then((result) => {
                 return result;
@@ -56,7 +59,6 @@ module.exports = {
         
     },
     editAllianceById(id, alliance){
-        console.log(id);
         return DB.query(
         'UPDATE alliances SET name = ${newAllianceName} WHERE NOT EXISTS (SELECT name FROM alliances WHERE name = $(newAllianceName)) AND id = $(allianceID) RETURNING *',
             {

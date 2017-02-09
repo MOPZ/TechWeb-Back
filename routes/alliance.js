@@ -30,8 +30,11 @@ router.post('/', function(req, res, next){
             
             if(alliance.length === 0)
             {
-                res.status(500);
-                res.send("ALLIANCE_ALREADY_CREATED");
+                res.status(500)
+                    .json({
+                        error: 'Error',
+                        message: 'ALLIANCE_ALREADY_CREATED'
+                    })
             }
             else
             {
@@ -53,10 +56,10 @@ Object received :
     }
 }
 */
-router.delete('/', function(req,res, next){
-    var id = parseInt(req.body.alliance.id);
+router.delete('/:id', function(req,res, next){
+    var id = parseInt(req.params.id);
     AllianceDAO.deleteAllianceById(id)
-        .then((alliance) => {console.log(alliance);
+        .then((alliance) => {
             if(alliance.length === 0)
             {
                 res.status(500);
