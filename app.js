@@ -11,6 +11,9 @@ var alliances = require('./routes/alliance');
 var characters = require('./routes/character');
 
 var app = express();
+var cors = require('cors');
+
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
