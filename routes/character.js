@@ -100,4 +100,17 @@ router.put('/:id', function(req,res,next)
         )
 });
 
+router.get('/all/:class', function(req,res,next)
+{
+    var charclass = req.params.class;
+    CharDAO.getCharactersByClass(charclass)
+        .then((character) =>{
+            res.status(200);
+            res.send(character);
+        })
+        .catch((error) => 
+            res.send(error)
+        )
+});
+
 module.exports = router;

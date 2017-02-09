@@ -75,6 +75,36 @@ module.exports = {
         .catch((error) =>{
             throw error;
         })
+    },
+    getCharactersByClass(char_class){
+        return DB.accessor.query(
+            'SELECT * from characters WHERE class = $(classChar)',
+            {
+                classChar : char_class
+            }
+        )
+        .then((result)=>{
+            return result;
+        })
+        .catch((error) =>{
+            throw error;
+        })
+    },
+    getAlliesCharacterByRadius(){
+        return DB.accessor.query(
+            'SELECT characters.* from characters, users '
+            +'WHERE characters.class = $(classname) AND users.alliance_id = $(allianceID) AND characters.user_id = users.id AND characters.id <> id',
+            {
+                allianceID : id,
+                classname: className
+            }
+        )
+            .then((result) => {
+                return result;
+            })
+            .catch((error) => {
+                throw error;
+            })
     }
 
 };
