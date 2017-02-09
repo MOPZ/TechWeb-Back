@@ -3,7 +3,7 @@ const DB = require('../models/database');
 
 module.exports = {
     getAll(){
-        return DB.query('SELECT * from users')
+        return DB.accessor.query('SELECT * from users')
             .then((result) => {
                 return result;
             })
@@ -12,7 +12,7 @@ module.exports = {
             })
     },
     getById(id){
-        return DB.query(
+        return DB.accessor.query(
             'SELECT * FROM users WHERE id = ${userID}',
             { userID: id }
         )
@@ -34,7 +34,7 @@ module.exports = {
         {
             q_allianceID = allianceID
         }
-        return DB.query(
+        return DB.accessor.query(
             'INSERT INTO users(name, email, alliance_id) '
             + 'SELECT $(userName), $(mail), $(allianceid) '
             + 'FROM (values(1)) as TMP '
@@ -53,7 +53,7 @@ module.exports = {
         })
     },
     deleteUserById(id){
-        return DB.query(
+        return DB.accessor.query(
             'DELETE FROM users WHERE id = $(userID) RETURNING *',
             {
                 userID: id
@@ -79,7 +79,7 @@ module.exports = {
         {
             q_allianceID = allianceID
         }
-        return DB.query(
+        return DB.accessor.query(
             'UPDATE users '
             +'SET name = $(newUserName), email = $(newMail), alliance_id = $(newAllianceID) '
             +'WHERE id = $(userID) RETURNING *',

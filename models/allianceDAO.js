@@ -3,7 +3,7 @@ const DB = require('../models/database');
 
 module.exports = {
     getAll(){
-        return DB.query('SELECT * FROM alliances')
+        return DB.accessor.query('SELECT * FROM alliances')
             .then((result) => {
                 return result;
             })
@@ -12,7 +12,7 @@ module.exports = {
             })
     },
     getById(id){
-        return DB.query(
+        return DB.accessor.query(
             'SELECT * FROM alliances WHERE id = ${allianceID}',
             { 
                 allianceID: id
@@ -27,7 +27,7 @@ module.exports = {
     },
     create(alliancename){
         console.log(alliancename);
-        return DB.query(
+        return DB.accessor.query(
             'INSERT INTO alliances(name) '
             + 'SELECT $(allianceName) '
             + 'FROM (values(1)) as TMP '
@@ -44,7 +44,7 @@ module.exports = {
             })
     },
     deleteAllianceById(id){
-        return DB.query(
+        return DB.accessor.query(
             'DELETE FROM alliances WHERE id = $(allianceID) RETURNING *',
             {
                 allianceID: id
@@ -59,7 +59,7 @@ module.exports = {
         
     },
     editAllianceById(id, alliance){
-        return DB.query(
+        return DB.accessor.query(
         'UPDATE alliances SET name = ${newAllianceName} WHERE NOT EXISTS (SELECT name FROM alliances WHERE name = $(newAllianceName)) AND id = $(allianceID) RETURNING *',
             {
                 newAllianceName: alliance,
@@ -72,6 +72,8 @@ module.exports = {
             .catch((error) => {
                 throw error;
             })
+    },
+    getListUsersById(id){
 
     }
 };
