@@ -59,17 +59,17 @@ COPY users (id, name, email, alliance_id) FROM stdin;
 --
 
 COPY characters (id, name, user_id, class, "position") FROM stdin;
-1	Gedeon	2	thief	(0,0)
-2	Gimli	2	warrior	(0,0)
-3	Pippin	2	thief	(0,0)
-4	Merry	3	thief	(0,0)
-5	Aragorn	4	warrior	(0,0)
-6	Boromir	4	warrior	(0,0)
-7	Saroumane	5	mage	(0,0)
-8	Golum	6	thief	(0,0)
-9	Legolas	7	thief	(0,0)
-10	Sam	7	thief	(0,0)
-11	Faramir	8	warrior	(0,0)
+1	Gedeon	1	thief	(48.792716,2.359279)
+2	Gimli	2	warrior	(48.792689,2.360001)
+3	Pippin	2	thief	(48.794004,2.354250)
+4	Merry	3	thief	(48.789443,2.363579)
+5	Aragorn	4	warrior	(48.789216,2.364340)
+6	Boromir	4	warrior	(48.788640,2.363770)
+7	Saroumane	5	mage	(48.788495,2.365620)
+8	Golum	6	thief	(48.787238,2.367082)
+9	Legolas	7	thief	(48.788531,2.368058)
+10	Sam	7	thief	(48.789393,2.366720)
+11	Faramir	8	warrior	(48.789897,2.367776)
 \.
 
 
