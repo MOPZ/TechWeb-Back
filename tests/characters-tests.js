@@ -9,10 +9,10 @@ const getCharacterOne = require('./results/characters/get-characters-1.json');
 const postCharacter = require('./results/characters/post-characters.json');
 const deleteCharacter = require('./results/characters/delete-characters-1.json');
 const putCharacter = require('./results/characters/put-characters-1.json');
-const sql = DB.sql('../dumps/test-data.sql');
+const sql = DB.sql('../dumps/data-tests.sql');
 
 test.serial('Characters - GET - Get all characters', t => {
-  DB.accessor.query(sql)
+  return DB.accessor.query(sql)
     .then(() => {
       return request(app)
         .get('/characters')
@@ -27,7 +27,7 @@ test.serial('Characters - GET - Get all characters', t => {
 });
 
 test.serial('Characters - GET - Get character id ' + getCharacterOne.parameters.id, t => {
-  DB.accessor.query(sql)
+  return DB.accessor.query(sql)
     .then(() => {
       return request(app)
         .get('/characters/' + getCharacterOne.parameters.id)
@@ -42,7 +42,7 @@ test.serial('Characters - GET - Get character id ' + getCharacterOne.parameters.
 });
 
 test.serial('Characters - POST - Create Character', t => {
-  DB.accessor.query(sql)
+  return DB.accessor.query(sql)
     .then(() => {
       return request(app)
         .post('/characters/')
@@ -58,7 +58,7 @@ test.serial('Characters - POST - Create Character', t => {
 });
 
 test.serial('Characters - DELETE - Delete Character with id ' + deleteCharacter.parameters.id, t => {
-  DB.accessor.query(sql)
+  return DB.accessor.query(sql)
     .then(() => {
       return request(app)
         .delete('/characters/' + deleteCharacter.parameters.id)
@@ -73,14 +73,14 @@ test.serial('Characters - DELETE - Delete Character with id ' + deleteCharacter.
 });
 
 test.serial('Characters - PUT - Update Character with id ' + putCharacter.parameters.id, t => {
-  DB.accessor.query(sql)
+  return DB.accessor.query(sql)
     .then(() => {
       return request(app)
         .put('/characters/' + putCharacter.parameters.id)
         .send(putCharacter.body)
         .then((res) => {
           t.is(res.status, 200);
-          t.deepEqual(res.body, deleteCharacter.result);
+          t.deepEqual(res.body, putCharacter.result);
         })
     })
     .catch((error) => {
