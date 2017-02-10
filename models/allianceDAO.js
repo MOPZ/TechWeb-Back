@@ -19,25 +19,21 @@ module.exports = {
             }
         )
             .then((result) => {
-                if(result.length === 0){
-                    throw 'ALLIANCE NOT_FOUND';
-                }
                 return result[0];
             })
     },
     create(alliancename){
-        console.log(alliancename);
         return DB.accessor.query(
             'INSERT INTO alliances(name) '
-            + 'SELECT $(allianceName) '
-            + 'FROM (values(1)) as TMP '
-            + 'WHERE NOT EXISTS (SELECT name from alliances WHERE name = $(allianceName)) RETURNING *',
+            + 'SELECT $(allianceName) RETURNING *',
+            //+ 'FROM (values(1)) as TMP '
+            //+ 'WHERE NOT EXISTS (SELECT name from alliances WHERE name = $(allianceName)) RETURNING *',
             {
                 "allianceName" : alliancename
             }
             )
             .then((result) => {
-                return result;
+                return result[0];
             })
             .catch((error) => {
                 throw error;
@@ -51,23 +47,25 @@ module.exports = {
             }
         )
             .then((result) => {
-                return result;
+                return result[0];
             })
             .catch((error) => {
                 throw error;
             })
         
     },
-    editAllianceById(id, alliance){
+    editAllianceById(id, alliance){console.log(id)
         return DB.accessor.query(
-        'UPDATE alliances SET name = ${newAllianceName} WHERE NOT EXISTS (SELECT name FROM alliances WHERE name = $(newAllianceName)) AND id = $(allianceID) RETURNING *',
+        'UPDATE alliances SET name = ${newAllianceName} '
+        //+'WHERE NOT EXISTS (SELECT name FROM alliances WHERE name = $(newAllianceName)) '
+        +'WHERE id = $(allianceID) RETURNING *',
             {
                 newAllianceName: alliance,
                 allianceID: id
             }
         )
         .then((result) => {
-                return result;
+                return result[0];
             })
             .catch((error) => {
                 throw error;
