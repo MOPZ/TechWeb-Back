@@ -16,18 +16,16 @@ module.exports = {
             { characterID : id }
         )
             .then((result) => {
-                if(result.length ===0) {
-                    throw 'CHARACTER NOT_FOUND';
-                }
                 return result [0];
             })
     },
     createCharacter(name, char_class, user_id, position){
-        console.log(position);
         return DB.accessor.query(
             'INSERT INTO characters(name, user_id, class, position)'
             + 'SELECT $(charName), $(userID), $(classChar), $(charPosition) '
-            + 'FROM (values(1)) as TMP WHERE NOT EXISTS (SELECT name from characters WHERE name = $(charName)) RETURNING *',
+            + 'RETURNING *',
+            //+ 'FROM (values(1)) as TMP 
+            //+ 'WHERE NOT EXISTS (SELECT name from characters WHERE name = $(charName)) RETURNING *',
             {
                 charName : name,
                 classChar : char_class,
@@ -36,7 +34,7 @@ module.exports = {
             }
         )
         .then((result)=>{
-            return result;
+            return result[0];
         })
         .catch((error) =>{
             throw error;
@@ -47,7 +45,7 @@ module.exports = {
             'DELETE FROM characters WHERE id = '+ id + ' RETURNING *'
         )
             .then((result) => {
-                return result;
+                return result[0];
             })
             .catch((error) => {
                 throw error;
@@ -66,11 +64,11 @@ module.exports = {
                 charName : name,
                 classChar : char_class,
                 userID: user_id,
-                charPosition: position
+                charPosition: '(' + position.x + ',' + position.y + ')'
             }
         )
         .then((result)=>{
-            return result;
+            return result[0];;
         })
         .catch((error) =>{
             throw error;
