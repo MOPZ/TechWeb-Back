@@ -6,17 +6,31 @@ const UserDAO = require('../models/UserDAO');
 router.get('/', function(req, res, next){
     UserDAO.getAll()
         .then((users) => {
-            res.status(200);
-            res.send(users);
-        });
+            res.status(200)
+            .json({
+                "status": "success",
+                "users" : users
+                
+            });
+        })
+        .catch((error) =>
+            res.status(500)
+            .json({
+                "status": "Error",
+                "message": "error"
+            })
+        )
 });
 
 router.get('/:id', function(req, res, next) {
     var id = parseInt(req.params.id);
     UserDAO.getById(id)
         .then((user) => {
-            res.status(200);
-            res.send(user);
+            res.status(200)
+            .json({
+                "status": "success",
+                "user" : user
+            });
         })
         .catch((error) =>
             res.send(error)
@@ -29,18 +43,11 @@ router.post('/', function(req,res,next){
     var email= req.body.user.email;
     UserDAO.create(name, email, allianceID)
         .then((user) => {
-            if(user.length === 0)
-            {
-                res.status(500).json ({
-                    status: 'Error',
-                    message : 'USER_ALREADY_CREATED'
-                })
-            }
-            else
-            {
-                res.status(200);
-                res.send(user);
-            }
+           res.status(200)
+            .json({
+                "status": "success",
+                "users" : users
+            });
         })
         .catch((error) =>
             res.send(error)

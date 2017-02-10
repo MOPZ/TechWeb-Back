@@ -9,10 +9,10 @@ const getUserOne = require('./results/users/get-users-1.json');
 const postUser = require('./results/users/post-users.json');
 const deleteUser = require('./results/users/delete-users-1.json');
 const putUser = require('./results/users/put-users-1.json');
-const sql = DB.sql('../dumps/test-data.sql');
+const sql = DB.sql('../dumps/data-tests.sql');
 
 test.serial('Users - GET - Get all users', t => {
-  DB.accessor.query(sql)
+  return DB.accessor.query(sql)
     .then(() => {
       return request(app)
         .get('/users')
@@ -22,12 +22,13 @@ test.serial('Users - GET - Get all users', t => {
         })
     })
     .catch((error) => {
+      t.fail();
       throw error;
     });
 });
 
 test.serial('Users - GET - Get user id ' + getUserOne.parameters.id, t => {
-  DB.accessor.query(sql)
+  return DB.accessor.query(sql)
     .then(() => {
       return request(app)
         .get('/users/' + getUserOne.parameters.id)
@@ -37,12 +38,13 @@ test.serial('Users - GET - Get user id ' + getUserOne.parameters.id, t => {
         })
     })
     .catch((error) => {
+      t.fail();
       throw error;
     });
 });
 
 test.serial('Users - POST - Create User', t => {
-  DB.accessor.query(sql)
+  return DB.accessor.query(sql)
     .then(() => {
       return request(app)
         .post('/users/')
@@ -53,12 +55,13 @@ test.serial('Users - POST - Create User', t => {
         })
     })
     .catch((error) => {
+      t.fail();
       throw error;
     })
 });
 
 test.serial('Users - DELETE - Delete User with id ' + deleteUser.parameters.id, t => {
-  DB.accessor.query(sql)
+  return DB.accessor.query(sql)
     .then(() => {
       return request(app)
         .delete('/users/' + deleteUser.parameters.id)
@@ -68,22 +71,24 @@ test.serial('Users - DELETE - Delete User with id ' + deleteUser.parameters.id, 
         })
     })
     .catch((error) => {
+      t.fail();
       throw error;
     });
 });
 
 test.serial('Users - PUT - Update User with id ' + putUser.parameters.id, t => {
-  DB.accessor.query(sql)
+  return DB.accessor.query(sql)
     .then(() => {
       return request(app)
         .put('/users/' + putUser.parameters.id)
         .send(putUser.body)
         .then((res) => {
           t.is(res.status, 200);
-          t.deepEqual(res.body, deleteUser.result);
+          t.deepEqual(res.body, putUser.result);
         })
     })
     .catch((error) => {
+      t.fail();
       throw error;
     });
 });

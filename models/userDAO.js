@@ -11,16 +11,16 @@ module.exports = {
                 throw error;
             })
     },
-    getById(id){
+    getById(id){console.log(id);
         return DB.accessor.query(
             'SELECT * FROM users WHERE id = ${userID}',
             { userID: id }
         )
             .then((result) => {
-                if(result.length ===0) {
-                    throw 'USER NOT_FOUND';
-                }
-                return result [0];
+                return result[0];
+            })
+            .catch((error) => {
+                throw error;
             })
     },
     create(username, email, allianceID){
