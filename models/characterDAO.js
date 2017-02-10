@@ -90,13 +90,43 @@ module.exports = {
             throw error;
         })
     },
-    getAlliesCharacterByRadius(){
+    getAlliesCharacterByRadius(id, radius){
         return DB.accessor.query(
-            'SELECT characters.* from characters, users '
-            +'WHERE characters.class = $(classname) AND users.alliance_id = $(allianceID) AND characters.user_id = users.id AND characters.id <> id',
+            'select characters.* from characters, users '
+            + 'where users.id = characters.user_id '
+            + 'and users.alliance_id = (select users.alliance_id from users, characters '
+            + 'where users.id = characters.user_id and characters.id = $(charID)) '
+            + 'and characters.id <> $(charID) '
+            + 'and ((select characters.position + $(allyRadius) as radius_positif from characters where characters.id = $(charID))[0] > characters.position[0] '
+            + 'and (select characters.position + $(allyRadius) as radius_positif from characters where characters.id = $(charID))[1] > characters.position[1]) '
+            + 'and ((select characters.position - $(allyRadius) as radius_negatif from characters where characters.id = $(charID))[0] < characters.position[0] '
+            + 'and (select characters.position - $(allyRadius) as radius_negatif from characters where characters.id = $(charID))[1] < characters.position[1])',
             {
-                allianceID : id,
-                classname: className
+                charID : id,
+                allyRadius: '('+radius+','+radius+')',
+            }
+        )
+            .then((result) => {
+                return result;
+            })
+            .catch((error) => {
+                throw error;
+            })
+    },
+    getEnnemiesCharacterByRadius(id, radius){
+        return DB.accessor.query(
+            'select characters.* from characters, users '
+            + 'where users.id = characters.user_id '
+            + 'and users.alliance_id <> (select users.alliance_id from users, characters '
+            + 'where users.id = characters.user_id and characters.id = $(charID)) '
+            + 'and characters.id <> $(charID) '
+            + 'and ((select characters.position + $(allyRadius) as radius_positif from characters where characters.id = $(charID))[0] > characters.position[0] '
+            + 'and (select characters.position + $(allyRadius) as radius_positif from characters where characters.id = $(charID))[1] > characters.position[1]) '
+            + 'and ((select characters.position - $(allyRadius) as radius_negatif from characters where characters.id = $(charID))[0] < characters.position[0] '
+            + 'and (select characters.position - $(allyRadius) as radius_negatif from characters where characters.id = $(charID))[1] < characters.position[1])',
+            {
+                charID : id,
+                allyRadius: '('+radius+','+radius+')',
             }
         )
             .then((result) => {

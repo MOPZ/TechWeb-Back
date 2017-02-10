@@ -35,7 +35,6 @@ router.post('/', function(req,res,next)
     var charclass = req.body.character.class;
     var user_id = parseInt(req.body.character.userID);
     var position = req.body.character.position;
-    //var position = '(456.23, 222.666)'
     CharDAO.createCharacter(charname, charclass,user_id,position)
         .then((character) =>{
             if(character.length === 0)
@@ -112,5 +111,36 @@ router.get('/all/:class', function(req,res,next)
             res.send(error)
         )
 });
+
+router.get('/:id/allies/:radius', function(req,res,next)
+{
+    var id = parseInt(req.params.id);
+    var radius = req.params.radius.replace(',','.'); //If user put comma (,) instead of point for decimal
+    radius = parseFloat(radius);
+    CharDAO.getAlliesCharacterByRadius(id, radius)
+        .then((character) =>{
+            res.status(200);
+            res.send(character);
+        })
+        .catch((error) => 
+            res.send(error)
+        )
+});
+
+router.get('/:id/ennemies/:radius', function(req,res,next)
+{
+    var id = parseInt(req.params.id);
+    var radius = req.params.radius.replace(',','.'); //If user put comma (,) instead of point for decimal
+    radius = parseFloat(radius);
+    CharDAO.getEnnemiesCharacterByRadius(id, radius)
+        .then((character) =>{
+            res.status(200);
+            res.send(character);
+        })
+        .catch((error) => 
+            res.send(error)
+        )
+});
+
 
 module.exports = router;
