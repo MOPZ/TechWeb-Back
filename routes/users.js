@@ -39,14 +39,15 @@ router.get('/:id', function(req, res, next) {
 
 router.post('/', function(req,res,next){
     var name = req.body.user.name;
-    var allianceID = req.body.user.allianceID;
+    var allianceID = req.body.user.alliance_id;
     var email= req.body.user.email;
     UserDAO.create(name, email, allianceID)
         .then((user) => {
            res.status(200)
             .json({
                 "status": "success",
-                "users" : users
+                "message": "Inserted one user",
+                "user" : user
             });
         })
         .catch((error) =>
@@ -58,18 +59,11 @@ router.delete('/:id', function(req,res,next){
     var id = parseInt(req.params.id);
     UserDAO.deleteUserById(id)
         .then((user) => {
-            if(user.length === 0)
-            {
-                res.status(500).json ({
-                    status: 'Error',
-                    message : 'USER_NON_EXISTENT'
-                })
-            }
-            else
-            {
-                res.status(200);
-                res.send(user);
-            }
+            res.status(200)
+            .json({
+                "status": "success",
+                "message": []
+            });
         })
         .catch((error) =>
             res.send(error)
@@ -83,8 +77,12 @@ router.put('/:id', function(req,res,next){
     var allianceID = req.body.user.alliance_id
     UserDAO.editUserById(id, username, email, allianceID)
         .then((user) => {
-            res.status(200);
-            res.send(user);
+            res.status(200)
+            .json({
+                "status": "success",
+                "message": "modified a user",
+                "user": user
+            });
         })
         .catch((error) =>
             res.send(error)

@@ -11,7 +11,7 @@ module.exports = {
                 throw error;
             })
     },
-    getById(id){console.log(id);
+    getById(id){
         return DB.accessor.query(
             'SELECT * FROM users WHERE id = ${userID}',
             { userID: id }
@@ -24,29 +24,19 @@ module.exports = {
             })
     },
     create(username, email, allianceID){
-        var q_email = "null";
-        var q_allianceID = null;
-        if(!(email === undefined))
-        {
-            q_email = email;
-        }
-        if(!(allianceID === undefined))
-        {
-            q_allianceID = allianceID
-        }
         return DB.accessor.query(
             'INSERT INTO users(name, email, alliance_id) '
-            + 'SELECT $(userName), $(mail), $(allianceid) '
-            + 'FROM (values(1)) as TMP '
-            + 'WHERE NOT EXISTS (SELECT name FROM users where name = $(userName)) RETURNING *',
+            + 'SELECT $(userName), $(mail), $(allianceid) RETURNING *',
+            //+ 'FROM (values(1)) as TMP '
+            //+ 'WHERE NOT EXISTS (SELECT name FROM users where name = $(userName)) RETURNING *',
             {
                 userName: username,
-                mail: q_email,
-                allianceid: q_allianceID
+                mail: email,
+                allianceid: allianceID
             }
         )
         .then ((result) => {
-            return result;
+            return result[0];
         })
         .catch((error) => {
             throw error;
@@ -60,7 +50,7 @@ module.exports = {
             }
         )
             .then((result) => {
-                return result;
+                return result[0];
             })
             .catch((error) => {
                 throw error;
@@ -69,29 +59,19 @@ module.exports = {
     },
     editUserById(id, name, email, allianceID)
     {
-        var q_email = "null";
-        var q_allianceID = null;
-        if(!(email === undefined))
-        {
-            q_email = email;
-        }
-        if(!(allianceID === undefined))
-        {
-            q_allianceID = allianceID
-        }
         return DB.accessor.query(
             'UPDATE users '
             +'SET name = $(newUserName), email = $(newMail), alliance_id = $(newAllianceID) '
             +'WHERE id = $(userID) RETURNING *',
             {
                 newUserName: name,
-                newMail: q_email,
-                newAllianceID: q_allianceID,
+                newMail: email,
+                newAllianceID: allianceID,
                 userID : id
             }
         )
             .then((result) => {
-                return result;
+                return result[0];
             })
             .catch((error) => {
                 throw error;
