@@ -92,9 +92,12 @@ router.put('/:id', function(req,res,next){
 router.get('/:id/characters', function(req,res,next){
     var id = parseInt(req.params.id);
     UserDAO.getUserCharactersById(id)
-        .then((user) => {
-            res.status(200);
-            res.send(user);
+        .then((characters) => {
+            res.status(200)
+            .json({
+                "status": "success",
+                "characters": characters
+            });
         })
         .catch((error) =>
             res.send(error)
