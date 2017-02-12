@@ -24,8 +24,6 @@ module.exports = {
             'INSERT INTO characters(name, user_id, class, position)'
             + 'SELECT $(charName), $(userID), $(classChar), $(charPosition) '
             + 'RETURNING *',
-            //+ 'FROM (values(1)) as TMP 
-            //+ 'WHERE NOT EXISTS (SELECT name from characters WHERE name = $(charName)) RETURNING *',
             {
                 charName : name,
                 classChar : char_class,

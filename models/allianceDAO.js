@@ -54,10 +54,9 @@ module.exports = {
             })
         
     },
-    editAllianceById(id, alliance){console.log(id)
+    editAllianceById(id, alliance){
         return DB.accessor.query(
         'UPDATE alliances SET name = ${newAllianceName} '
-        //+'WHERE NOT EXISTS (SELECT name FROM alliances WHERE name = $(newAllianceName)) '
         +'WHERE id = $(allianceID) RETURNING *',
             {
                 newAllianceName: alliance,

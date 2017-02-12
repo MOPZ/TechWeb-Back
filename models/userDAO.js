@@ -27,8 +27,6 @@ module.exports = {
         return DB.accessor.query(
             'INSERT INTO users(name, email, alliance_id) '
             + 'SELECT $(userName), $(mail), $(allianceid) RETURNING *',
-            //+ 'FROM (values(1)) as TMP '
-            //+ 'WHERE NOT EXISTS (SELECT name FROM users where name = $(userName)) RETURNING *',
             {
                 userName: username,
                 mail: email,

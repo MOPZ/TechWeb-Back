@@ -16,8 +16,8 @@ router.get('/', function(req, res, next){
         .catch((error) =>
             res.status(500)
             .json({
-                "status": "Error",
-                "message": "error"
+            status: 'Error',
+            message: error
             })
         )
 });
@@ -33,7 +33,11 @@ router.get('/:id', function(req, res, next) {
             });
         })
         .catch((error) =>
-            res.send(error)
+            res.status(500)
+            .json({
+            status: 'Error',
+            message: error
+            })
         )
 });
 
@@ -51,7 +55,11 @@ router.post('/', function(req,res,next){
             });
         })
         .catch((error) =>
-            res.send(error)
+            res.status(500)
+            .json({
+            status: 'Error',
+            message: error
+            })
         )
 });
 
@@ -66,7 +74,11 @@ router.delete('/:id', function(req,res,next){
             });
         })
         .catch((error) =>
-            res.send(error)
+            res.status(500)
+            .json({
+            status: 'Error',
+            message: error
+            })
         )
 });
 
@@ -85,7 +97,11 @@ router.put('/:id', function(req,res,next){
             });
         })
         .catch((error) =>
-            res.send(error)
+            res.status(500)
+            .json({
+            status: 'Error',
+            message: error
+            })
         )
 });
 
@@ -100,7 +116,11 @@ router.get('/:id/characters', function(req,res,next){
             });
         })
         .catch((error) =>
-            res.send(error)
+            res.status(500)
+            .json({
+            status: 'Error',
+            message: error
+            })
         )
 })
 
