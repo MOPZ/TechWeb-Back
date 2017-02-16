@@ -5,22 +5,22 @@ Benoît TRAN
 #Initialize database
 * Install postgresql
 * Set the command line in the project's /dump folder : `cd myProjectPath/dump`
-* Connect to admin user and launch following commands : `psql -U postgres`
-    ```
-    CREATE USER efrei WITH PASSWORD 'password';
-    CREATE SCHEMA efrei;
-    CREATE DATABASE efrei;
-    GRANT ALL PRIVILEGES ON DATABASE efrei TO efrei;
-    ```
+* Launch the following commands :
+ ```
+ psql -U postgres < schema.sql
+ psql -U postgres efrei < test-data.sql
+ ```
 
-* Connect to efrei user : 
-    ```
-    psql -U efrei
-    password
-    ```
+#Initialize project
+* Install nodeJS
+* Launch the command:
 
-* Execute following commands to load the database :
-    ```
-    \i schema.sql;
-    \i test-data.sql;
-    ```
+```
+npm install
+```
+
+#Launch project
+```
+npm start
+```
+You might also use `nodemon start` if you installed nodemon
