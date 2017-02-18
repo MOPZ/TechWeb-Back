@@ -4,11 +4,12 @@ Benoît TRAN
 
 #Initialize database
 * Install postgresql
-* Set the command line in the project's /dump folder : `cd myProjectPath/dump`
+* Set the command line in the project's /dumps folder : `cd myProjectPath/dumps`
 * Launch the following commands :
+ 
  ```
  psql -U postgres < schema.sql
- psql -U postgres efrei < data-test.sql
+ psql -U postgres efrei < data-tests.sql
  ```
 
 #Initialize project
